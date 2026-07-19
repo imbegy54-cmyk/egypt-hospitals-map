@@ -405,7 +405,7 @@
             try {
                 showLoadingMessage('جاري تحميل بيانات المستشفيات...');
                 
-                // استخدام المسار النسبي لـ Vercel
+                // ✅ استخدام المسار النسبي لـ Vercel
                 const response = await fetch('/api/hospitals');
                 if (!response.ok) throw new Error('فشل تحميل البيانات');
                 
@@ -426,7 +426,7 @@
         // =============================================
         async function loadHospitalDetails(sheetId) {
             try {
-                // استخدام المسار النسبي لـ Vercel
+                // ✅ استخدام المسار النسبي لـ Vercel
                 const response = await fetch(`/api/hospital/${sheetId}`);
                 if (!response.ok) throw new Error('فشل تحميل التفاصيل');
                 return await response.json();
@@ -522,7 +522,7 @@
         }
 
         // =============================================
-        // عرض التفاصيل الكاملة - تصميم متطور
+        // عرض التفاصيل الكاملة
         // =============================================
         async function showFullDetails(sheetId, hospitalName) {
             if (!sheetId || sheetId === '') {
@@ -530,12 +530,10 @@
                 return;
             }
             
-            // عرض رسالة تحميل
             showLoadingPopup(hospitalName);
             
             const details = await loadHospitalDetails(sheetId);
             
-            // إخفاء رسالة التحميل
             document.querySelector('.loading-popup')?.remove();
             document.getElementById('loading-overlay')?.remove();
             
@@ -545,8 +543,6 @@
             }
             
             console.log('📋 التفاصيل المستلمة:', details);
-            
-            // بناء الكارت المتطور
             buildAdvancedCard(hospitalName, details);
         }
 
@@ -580,29 +576,14 @@
         // بناء الكارت المتطور
         // =============================================
         function buildAdvancedCard(hospitalName, details) {
-            // إزالة أي كارت قديم
             document.querySelector('.details-popup')?.remove();
             document.querySelector('.details-overlay')?.remove();
             
-            // =============================================
-            // تحليل البيانات بأمان
-            // =============================================
-            
-            // دالة مساعدة لاستخراج البيانات بأمان
-            function safeGet(data, key, fallback) {
-                if (!data) return fallback;
-                if (Array.isArray(data) && data.length === 0) return fallback;
-                if (data[key] !== undefined && data[key] !== null) return data[key];
-                return fallback;
-            }
-            
-            // دالة للتأكد من أن البيانات مصفوفة
             function safeArray(data) {
                 if (Array.isArray(data) && data.length > 0) return data;
                 return [];
             }
             
-            // استخراج البيانات بأمان
             const adminData = safeArray(details.الهيكل_الاداري);
             const headsData = safeArray(details.رؤساء_الاقسام);
             const committeesData = safeArray(details.اللجان);
@@ -612,20 +593,6 @@
             const gasData = safeArray(details.شبكة_الغازات);
             const creditsData = safeArray(details.الاعتمادات);
             
-            console.log('📊 البيانات المحللة:', {
-                admin: adminData.length,
-                heads: headsData.length,
-                committees: committeesData.length,
-                systems: systemsData.length,
-                staff: staffData.length,
-                contracts: contractsData.length,
-                gas: gasData.length,
-                credits: creditsData.length
-            });
-            
-            // =============================================
-            // دوال مساعدة لاستخراج الأرقام
-            // =============================================
             function extractNumber(data, keyword) {
                 if (!data || data.length === 0) return '?';
                 for (const row of data) {
@@ -635,20 +602,6 @@
                 }
                 return '?';
             }
-            
-            function extractNumberFromStaff(data, keyword) {
-                if (!data || data.length === 0) return '?';
-                for (const row of data) {
-                    if (row.length > 1 && row[0] && row[0].includes(keyword)) {
-                        return row[1] || '?';
-                    }
-                }
-                return '?';
-            }
-            
-            // =============================================
-            // بناء HTML الكارت
-            // =============================================
             
             let html = `
                 <div class="details-popup" id="details-popup">
@@ -673,12 +626,9 @@
                         </div>
             `;
             
-            // =============================================
-            // تبويب: معلومات عامة
-            // =============================================
+            // تبويب عام
             html += `<div class="tab-content active" id="tab-general">`;
             
-            // إحصائيات سريعة
             const numDoctors = extractNumber(staffData, 'طبيب بشرى') || extractNumber(staffData, 'طبيب') || '?';
             const numPharmacists = extractNumber(staffData, 'صيدلى') || '?';
             const numNurses = extractNumber(staffData, 'تمريض') || '?';
@@ -688,44 +638,17 @@
             
             html += `
                 <div class="stats-grid">
-                    <div class="stat-item">
-                        <div class="icon">👨‍⚕️</div>
-                        <div class="number">${numDoctors}</div>
-                        <div class="stat-label">الأطباء</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="icon">💊</div>
-                        <div class="number">${numPharmacists}</div>
-                        <div class="stat-label">الصيادلة</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="icon">🩺</div>
-                        <div class="number">${numNurses}</div>
-                        <div class="stat-label">التمريض</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="icon">🏗️</div>
-                        <div class="number">${numElevators}</div>
-                        <div class="stat-label">المصاعد</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="icon">⚡</div>
-                        <div class="number">${numGenerators}</div>
-                        <div class="stat-label">المولدات</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="icon">📹</div>
-                        <div class="number">${numCameras}</div>
-                        <div class="stat-label">الكاميرات</div>
-                    </div>
+                    <div class="stat-item"><div class="icon">👨‍⚕️</div><div class="number">${numDoctors}</div><div class="stat-label">الأطباء</div></div>
+                    <div class="stat-item"><div class="icon">💊</div><div class="number">${numPharmacists}</div><div class="stat-label">الصيادلة</div></div>
+                    <div class="stat-item"><div class="icon">🩺</div><div class="number">${numNurses}</div><div class="stat-label">التمريض</div></div>
+                    <div class="stat-item"><div class="icon">🏗️</div><div class="number">${numElevators}</div><div class="stat-label">المصاعد</div></div>
+                    <div class="stat-item"><div class="icon">⚡</div><div class="number">${numGenerators}</div><div class="stat-label">المولدات</div></div>
+                    <div class="stat-item"><div class="icon">📹</div><div class="number">${numCameras}</div><div class="stat-label">الكاميرات</div></div>
                 </div>
             `;
             
-            // الاعتمادات
             if (creditsData.length > 0) {
-                html += `<div class="info-card">
-                    <div class="label">📜 الاعتمادات</div>
-                    <div class="value">`;
+                html += `<div class="info-card"><div class="label">📜 الاعتمادات</div><div class="value">`;
                 creditsData.forEach(row => {
                     if (row.length > 1) {
                         html += `<span class="badge badge-success">${row.join(' | ')}</span> `;
@@ -736,29 +659,13 @@
             
             html += `</div>`;
             
-            // =============================================
-            // تبويب: الهيكل الإداري
-            // =============================================
+            // تبويب الإدارة
             html += `<div class="tab-content" id="tab-admin">`;
             if (adminData.length > 0) {
-                html += `
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>الوظيفة</th>
-                                <th>الاسم</th>
-                                <th>الهاتف</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                `;
+                html += `<table class="data-table"><thead><tr><th>الوظيفة</th><th>الاسم</th><th>الهاتف</th></tr></thead><tbody>`;
                 adminData.forEach(row => {
                     if (row.length >= 3) {
-                        html += `<tr>
-                            <td>${row[0] || ''}</td>
-                            <td><strong>${row[2] || ''}</strong></td>
-                            <td>${row[4] || ''}</td>
-                        </tr>`;
+                        html += `<tr><td>${row[0] || ''}</td><td><strong>${row[2] || ''}</strong></td><td>${row[4] || ''}</td></tr>`;
                     }
                 });
                 html += `</tbody></table>`;
@@ -767,27 +674,18 @@
             }
             html += `</div>`;
             
-            // =============================================
-            // تبويب: رؤساء الأقسام
-            // =============================================
+            // تبويب رؤساء الأقسام
             if (headsData.length > 0) {
-                html += `<div class="tab-content" id="tab-heads">`;
-                html += `<div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">`;
+                html += `<div class="tab-content" id="tab-heads"><div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">`;
                 headsData.forEach(row => {
                     if (row.length > 1 && row[0] && row[0].trim()) {
-                        html += `<div class="info-card" style="border-right-color:#9b59b6;">
-                            <div class="label">${row[0]}</div>
-                            <div class="value">${row[1] || ''}</div>
-                            ${row[3] ? `<div style="font-size:13px; color:#7a8a9e; margin-top:3px;">📞 ${row[3]}</div>` : ''}
-                        </div>`;
+                        html += `<div class="info-card" style="border-right-color:#9b59b6;"><div class="label">${row[0]}</div><div class="value">${row[1] || ''}</div>${row[3] ? `<div style="font-size:13px; color:#7a8a9e; margin-top:3px;">📞 ${row[3]}</div>` : ''}</div>`;
                     }
                 });
                 html += `</div></div>`;
             }
             
-            // =============================================
-            // تبويب: اللجان
-            // =============================================
+            // تبويب اللجان
             if (committeesData.length > 0) {
                 html += `<div class="tab-content" id="tab-committees">`;
                 committeesData.forEach(row => {
@@ -795,12 +693,7 @@
                         const status = row[1] || '';
                         const isActive = status.includes('مفعل') || status.includes('ü');
                         html += `<div class="info-card" style="border-right-color:${isActive ? '#38a169' : '#e53e3e'};">
-                            <div class="value">
-                                ${row[0]}
-                                <span class="badge ${isActive ? 'badge-success' : 'badge-danger'}">
-                                    ${isActive ? '✅ مفعل' : '❌ غير مفعل'}
-                                </span>
-                            </div>
+                            <div class="value">${row[0]} <span class="badge ${isActive ? 'badge-success' : 'badge-danger'}">${isActive ? '✅ مفعل' : '❌ غير مفعل'}</span></div>
                             ${row[2] ? `<div style="font-size:13px; color:#7a8a9e; margin-top:3px;">${row[2]}</div>` : ''}
                         </div>`;
                     }
@@ -808,52 +701,29 @@
                 html += `</div>`;
             }
             
-            // =============================================
-            // تبويب: أنظمة التشغيل
-            // =============================================
+            // تبويب أنظمة التشغيل
             if (systemsData.length > 0) {
-                html += `<div class="tab-content" id="tab-systems">`;
-                html += `<div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">`;
+                html += `<div class="tab-content" id="tab-systems"><div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">`;
                 systemsData.forEach(row => {
                     if (row.length > 1 && row[0] && row[0].trim()) {
-                        html += `<div class="info-card" style="border-right-color:#f39c12;">
-                            <div class="label">${row[0]}</div>
-                            <div class="value">${row[1] || ''}</div>
-                        </div>`;
+                        html += `<div class="info-card" style="border-right-color:#f39c12;"><div class="label">${row[0]}</div><div class="value">${row[1] || ''}</div></div>`;
                     }
                 });
                 html += `</div></div>`;
             }
             
-            // =============================================
-            // تبويب: القوة البشرية
-            // =============================================
+            // تبويب القوة البشرية
             if (staffData.length > 0) {
-                html += `<div class="tab-content" id="tab-staff">`;
-                html += `
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>البيان</th>
-                                <th>العدد</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                `;
+                html += `<div class="tab-content" id="tab-staff"><table class="data-table"><thead><tr><th>البيان</th><th>العدد</th></tr></thead><tbody>`;
                 staffData.forEach(row => {
                     if (row.length > 1 && row[0] && row[0].trim()) {
-                        html += `<tr>
-                            <td>${row[0]}</td>
-                            <td><strong>${row[1] || ''}</strong></td>
-                        </tr>`;
+                        html += `<tr><td>${row[0]}</td><td><strong>${row[1] || ''}</strong></td></tr>`;
                     }
                 });
                 html += `</tbody></table></div>`;
             }
             
-            // =============================================
-            // تبويب: التعاقدات
-            // =============================================
+            // تبويب التعاقدات
             if (contractsData.length > 0) {
                 html += `<div class="tab-content" id="tab-contracts">`;
                 contractsData.forEach(row => {
@@ -863,9 +733,7 @@
                         const date = row[3] || row[2] || '';
                         html += `<div class="contract-item" style="border-right:4px solid ${isActive ? '#38a169' : '#e53e3e'};">
                             <span class="name">${row[0]}</span>
-                            <span class="badge ${isActive ? 'badge-success' : 'badge-danger'}">
-                                ${isActive ? '✅ يوجد' : '❌ لا يوجد'}
-                            </span>
+                            <span class="badge ${isActive ? 'badge-success' : 'badge-danger'}">${isActive ? '✅ يوجد' : '❌ لا يوجد'}</span>
                         </div>`;
                         if (date) {
                             html += `<div style="font-size:12px; color:#7a8a9e; padding:0 16px 10px 16px;">📅 ${date}</div>`;
@@ -875,42 +743,24 @@
                 html += `</div>`;
             }
             
-            // =============================================
-            // تبويب: شبكة الغازات
-            // =============================================
+            // تبويب شبكة الغازات
             if (gasData.length > 0) {
-                html += `<div class="tab-content" id="tab-gas">`;
-                html += `<div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">`;
+                html += `<div class="tab-content" id="tab-gas"><div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">`;
                 gasData.forEach(row => {
                     if (row.length > 1 && row[0] && row[0].trim()) {
-                        html += `<div class="info-card" style="border-right-color:#e74c3c;">
-                            <div class="label">${row[0]}</div>
-                            <div class="value">${row[1] || ''}</div>
-                        </div>`;
+                        html += `<div class="info-card" style="border-right-color:#e74c3c;"><div class="label">${row[0]}</div><div class="value">${row[1] || ''}</div></div>`;
                     }
                 });
                 html += `</div></div>`;
             }
             
-            // =============================================
-            // إغلاق الكارت
-            // =============================================
-            html += `
-                    </div>
-                </div>
-            `;
+            html += `</div></div>`;
             
-            // =============================================
-            // الخلفية المعتمة
-            // =============================================
             const overlay = document.createElement('div');
             overlay.className = 'details-overlay';
             overlay.id = 'details-overlay';
             overlay.addEventListener('click', closeDetails);
             
-            // =============================================
-            // إضافة الكارت للصفحة
-            // =============================================
             const popupContainer = document.createElement('div');
             popupContainer.innerHTML = html;
             const popupElement = popupContainer.firstElementChild;
