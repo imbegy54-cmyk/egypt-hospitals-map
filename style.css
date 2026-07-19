@@ -715,3 +715,1081 @@ body {
         height: calc(100vh - 110px) !important;
     }
 }
+/* =============================================
+           تنسيق الكارت المتطور
+           ============================================= */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f2f5;
+        }
+
+        #map {
+            height: 100vh;
+            width: 100%;
+        }
+
+        .details-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #ffffff;
+            border-radius: 20px;
+            z-index: 9999;
+            width: 92%;
+            max-width: 750px;
+            max-height: 90vh;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4);
+            overflow: hidden;
+            animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes popIn {
+            from {
+                transform: translate(-50%, -50%) scale(0.8);
+                opacity: 0;
+            }
+            to {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 1;
+            }
+        }
+
+        .details-popup-header {
+            background: linear-gradient(135deg, #1a3a5c, #2c7fb8);
+            color: white;
+            padding: 25px 30px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .details-popup-header h2 {
+            font-size: 26px;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .details-popup-header .hospital-icon {
+            font-size: 32px;
+        }
+
+        .details-popup-header .close-btn {
+            position: absolute;
+            top: 15px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            font-size: 24px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .details-popup-header .close-btn:hover {
+            background: rgba(255, 255, 255, 0.4);
+            transform: rotate(90deg);
+        }
+
+        .details-popup-body {
+            padding: 20px 25px;
+            max-height: calc(90vh - 100px);
+            overflow-y: auto;
+            background: #f8fafc;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+            position: sticky;
+            top: 0;
+            background: #f8fafc;
+            padding: 10px 0;
+            z-index: 5;
+        }
+
+        .tab-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 12px;
+            background: #e8ecf1;
+            color: #4a5568;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tab-btn:hover {
+            background: #d0d7e2;
+        }
+
+        .tab-btn.active {
+            background: #2c7fb8;
+            color: white;
+            box-shadow: 0 4px 15px rgba(44, 127, 184, 0.4);
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .info-card {
+            background: white;
+            border-radius: 14px;
+            padding: 18px 22px;
+            margin-bottom: 14px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            border-right: 4px solid #2c7fb8;
+        }
+
+        .info-card .label {
+            font-size: 13px;
+            color: #7a8a9e;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .info-card .value {
+            font-size: 16px;
+            color: #1a202c;
+            font-weight: 500;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        }
+
+        .data-table th {
+            background: #2c7fb8;
+            color: white;
+            padding: 12px 15px;
+            text-align: right;
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        .data-table td {
+            padding: 10px 15px;
+            border-bottom: 1px solid #edf2f7;
+            color: #2d3748;
+        }
+
+        .data-table tr:hover td {
+            background: #f7fafc;
+        }
+
+        .data-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .badge-success {
+            background: #c6f6d5;
+            color: #276749;
+        }
+
+        .badge-danger {
+            background: #fed7d7;
+            color: #9b2c2c;
+        }
+
+        .badge-warning {
+            background: #fefcbf;
+            color: #975a16;
+        }
+
+        .badge-info {
+            background: #bee3f8;
+            color: #2a69ac;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 12px;
+            margin: 10px 0;
+        }
+
+        .stat-item {
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            transition: 0.3s;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-item .icon {
+            font-size: 28px;
+            margin-bottom: 5px;
+        }
+
+        .stat-item .number {
+            font-size: 22px;
+            font-weight: 700;
+            color: #1a3a5c;
+        }
+
+        .stat-item .stat-label {
+            font-size: 12px;
+            color: #7a8a9e;
+        }
+
+        .contract-item {
+            background: white;
+            border-radius: 10px;
+            padding: 12px 16px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+        }
+
+        .contract-item .name {
+            font-weight: 500;
+            color: #2d3748;
+        }
+
+        .contract-item .date {
+            font-size: 13px;
+            color: #718096;
+        }
+
+        .details-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+            z-index: 9998;
+            animation: fadeOverlay 0.3s ease;
+        }
+
+        @keyframes fadeOverlay {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .loading-spinner {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            gap: 15px;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #e2e8f0;
+            border-top: 4px solid #2c7fb8;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .details-popup {
+                width: 96%;
+                max-height: 95vh;
+            }
+
+            .details-popup-header h2 {
+                font-size: 20px;
+            }
+
+            .tabs {
+                gap: 5px;
+            }
+
+            .tab-btn {
+                padding: 8px 14px;
+                font-size: 12px;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .data-table {
+                font-size: 12px;
+            }
+
+            .data-table th,
+            .data-table td {
+                padding: 8px 10px;
+            }
+/* =============================================
+   style.css - التنسيقات الكاملة
+   ============================================= */
+
+/* ==================== المتغيرات العامة ==================== */
+:root {
+    --primary: #1a3a6b;
+    --secondary: #2563eb;
+    --success: #10b981;
+    --danger: #ef4444;
+    --warning: #f59e0b;
+    --bg: #f0f4f8;
+    --card-bg: #ffffff;
+    --text: #1e293b;
+    --text-light: #64748b;
+    --border: #e2e8f0;
+    --header-bg: linear-gradient(135deg, #0f2557, #1a3a8f, #2563eb);
+    --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    --transition: 0.3s;
+}
+
+/* ==================== الإعدادات الأساسية ==================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f5f6fa;
+    color: var(--text);
+}
+
+/* ==================== الخريطة ==================== */
+#map {
+    height: calc(100vh - 85px) !important;
+    width: 100%;
+    z-index: 1;
+}
+
+/* ==================== الهيدر ==================== */
+.header {
+    background: linear-gradient(135deg, #0f2557, #1a3a8f, #2563eb);
+    color: white;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 28px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.header-logo {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.logo-icon {
+    width: 52px;
+    height: 52px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    flex-shrink: 0;
+    overflow: hidden;
+}
+
+.logo-icon img {
+    width: 52px;
+    height: 52px;
+    object-fit: contain;
+    border-radius: 14px;
+    background: white;
+    padding: 4px;
+}
+
+.header-title h1 {
+    font-size: 1.35rem;
+    font-weight: 700;
+    margin: 0;
+    color: white;
+}
+
+.header-title p {
+    font-size: 0.8rem;
+    opacity: 0.8;
+    margin: 2px 0 0 0;
+    color: white;
+}
+
+.header-controls {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.last-updated {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+    opacity: 0.9;
+}
+
+.live-dot {
+    width: 8px;
+    height: 8px;
+    background: #4ade80;
+    border-radius: 50%;
+    animation: pulse 1.5s infinite;
+    display: inline-block;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.5); opacity: 0.5; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.stats {
+    font-size: 0.9rem;
+    opacity: 0.9;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 6px 16px;
+    border-radius: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.stats span {
+    font-weight: 700;
+}
+
+.btn-refresh {
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 30px;
+    padding: 8px 18px;
+    color: white;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: all var(--transition) ease;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.btn-refresh:hover {
+    background: rgba(255, 255, 255, 0.25);
+    transform: translateY(-2px);
+}
+
+.btn-refresh:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* ==================== تنسيق البوب أب (الكارت) ==================== */
+.leaflet-popup-content {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-width: 350px;
+    max-width: 450px;
+    padding: 0 !important;
+    margin: 0 !important;
+    direction: rtl;
+}
+
+.leaflet-popup-content-wrapper {
+    border-radius: 12px !important;
+    overflow: hidden;
+    padding: 0 !important;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2) !important;
+}
+
+.leaflet-popup-tip {
+    display: none;
+}
+
+.leaflet-popup-content h3 {
+    color: #2c3e50;
+    margin-top: 0;
+    margin-bottom: 8px;
+    font-size: 18px;
+}
+
+.leaflet-popup-content hr {
+    margin: 8px 0;
+    border: 0;
+    border-top: 1px solid #ecf0f1;
+}
+
+.leaflet-popup-content p {
+    margin: 5px 0;
+    font-size: 14px;
+    color: #34495e;
+}
+
+/* تنسيق الأزرار داخل الكارت */
+.leaflet-popup-content button {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    transition: all var(--transition) ease;
+}
+
+.leaflet-popup-content button:hover {
+    transform: scale(1.02);
+    opacity: 0.9;
+}
+
+/* تنسيق التخصصات */
+.leaflet-popup-content .specialty-tag {
+    background: #3498db;
+    color: white;
+    padding: 3px 10px;
+    border-radius: 15px;
+    font-size: 12px;
+    display: inline-block;
+    margin: 2px;
+}
+
+/* تنسيق الإحصائيات */
+.stat-box {
+    background: #f8f9fa;
+    padding: 8px;
+    border-radius: 8px;
+    text-align: center;
+    transition: transform var(--transition) ease;
+}
+
+.stat-box:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* ==================== تنسيق زر الرجوع ==================== */
+.custom-return-btn button {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    transition: all var(--transition) ease;
+}
+
+.custom-return-btn button:hover {
+    background: #34495e !important;
+    transform: scale(1.05);
+}
+
+/* ==================== تنسيق علامات الخريطة ==================== */
+.gov-marker div {
+    transition: transform var(--transition) ease;
+    cursor: pointer;
+}
+
+.gov-marker div:hover {
+    transform: scale(1.1);
+}
+
+.hospital-marker div {
+    transition: transform var(--transition) ease;
+    cursor: pointer;
+}
+
+.hospital-marker div:hover {
+    transform: scale(1.2);
+}
+
+/* ==================== تنسيق الكارت المنبثق التفصيلي ==================== */
+.details-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #ffffff;
+    border-radius: 20px;
+    z-index: 9999;
+    width: 92%;
+    max-width: 750px;
+    max-height: 90vh;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4);
+    overflow: hidden;
+    animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes popIn {
+    from {
+        transform: translate(-50%, -50%) scale(0.8);
+        opacity: 0;
+    }
+    to {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+    }
+}
+
+.details-popup-header {
+    background: linear-gradient(135deg, #1a3a5c, #2c7fb8);
+    color: white;
+    padding: 25px 30px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.details-popup-header h2 {
+    font-size: 26px;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.details-popup-header .hospital-icon {
+    font-size: 32px;
+}
+
+.details-popup-header .close-btn {
+    position: absolute;
+    top: 15px;
+    left: 20px;
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: white;
+    font-size: 24px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.details-popup-header .close-btn:hover {
+    background: rgba(255, 255, 255, 0.4);
+    transform: rotate(90deg);
+}
+
+.details-popup-body {
+    padding: 20px 25px;
+    max-height: calc(90vh - 100px);
+    overflow-y: auto;
+    background: #f8fafc;
+}
+
+.details-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(8px);
+    z-index: 9998;
+    animation: fadeOverlay 0.3s ease;
+}
+
+@keyframes fadeOverlay {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* ==================== التبويبات ==================== */
+.tabs {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+    position: sticky;
+    top: 0;
+    background: #f8fafc;
+    padding: 10px 0;
+    z-index: 5;
+}
+
+.tab-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 12px;
+    background: #e8ecf1;
+    color: #4a5568;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.tab-btn:hover {
+    background: #d0d7e2;
+}
+
+.tab-btn.active {
+    background: #2c7fb8;
+    color: white;
+    box-shadow: 0 4px 15px rgba(44, 127, 184, 0.4);
+}
+
+.tab-content {
+    display: none;
+    animation: fadeIn 0.3s ease;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ==================== بطاقات المعلومات ==================== */
+.info-card {
+    background: white;
+    border-radius: 14px;
+    padding: 18px 22px;
+    margin-bottom: 14px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    border-right: 4px solid #2c7fb8;
+}
+
+.info-card .label {
+    font-size: 13px;
+    color: #7a8a9e;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+}
+
+.info-card .value {
+    font-size: 16px;
+    color: #1a202c;
+    font-weight: 500;
+}
+
+/* ==================== الجداول ==================== */
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.data-table th {
+    background: #2c7fb8;
+    color: white;
+    padding: 12px 15px;
+    text-align: right;
+    font-weight: 600;
+    font-size: 13px;
+}
+
+.data-table td {
+    padding: 10px 15px;
+    border-bottom: 1px solid #edf2f7;
+    color: #2d3748;
+}
+
+.data-table tr:hover td {
+    background: #f7fafc;
+}
+
+.data-table tr:last-child td {
+    border-bottom: none;
+}
+
+/* ==================== الشارات ==================== */
+.badge {
+    display: inline-block;
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.badge-success {
+    background: #c6f6d5;
+    color: #276749;
+}
+
+.badge-danger {
+    background: #fed7d7;
+    color: #9b2c2c;
+}
+
+.badge-warning {
+    background: #fefcbf;
+    color: #975a16;
+}
+
+.badge-info {
+    background: #bee3f8;
+    color: #2a69ac;
+}
+
+/* ==================== شبكة الإحصائيات ==================== */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 12px;
+    margin: 10px 0;
+}
+
+.stat-item {
+    background: white;
+    border-radius: 12px;
+    padding: 15px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    transition: var(--transition);
+}
+
+.stat-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+
+.stat-item .icon {
+    font-size: 28px;
+    margin-bottom: 5px;
+}
+
+.stat-item .number {
+    font-size: 22px;
+    font-weight: 700;
+    color: #1a3a5c;
+}
+
+.stat-item .stat-label {
+    font-size: 12px;
+    color: #7a8a9e;
+}
+
+/* ==================== عناصر العقود ==================== */
+.contract-item {
+    background: white;
+    border-radius: 10px;
+    padding: 12px 16px;
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+}
+
+.contract-item .name {
+    font-weight: 500;
+    color: #2d3748;
+}
+
+.contract-item .date {
+    font-size: 13px;
+    color: #718096;
+}
+
+/* ==================== رسائل التحميل ==================== */
+.loading-spinner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    gap: 15px;
+}
+
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 4px solid #e2e8f0;
+    border-top: 4px solid #2c7fb8;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* ==================== الاستجابة للشاشات المختلفة ==================== */
+@media (max-width: 768px) {
+    .header-inner {
+        padding: 10px 16px;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .header-title h1 {
+        font-size: 1.1rem;
+    }
+
+    .header-title p {
+        font-size: 0.7rem;
+    }
+
+    .logo-icon {
+        width: 42px;
+        height: 42px;
+    }
+
+    .logo-icon img {
+        width: 42px !important;
+        height: 42px !important;
+    }
+
+    .header-controls {
+        width: 100%;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .last-updated {
+        font-size: 0.7rem;
+    }
+
+    .stats {
+        font-size: 0.75rem;
+        padding: 4px 12px;
+    }
+
+    .btn-refresh {
+        padding: 6px 14px;
+        font-size: 0.75rem;
+    }
+
+    #map {
+        height: calc(100vh - 120px) !important;
+    }
+
+    .details-popup {
+        width: 96%;
+        max-height: 95vh;
+    }
+
+    .details-popup-header h2 {
+        font-size: 20px;
+    }
+
+    .tabs {
+        gap: 5px;
+    }
+
+    .tab-btn {
+        padding: 8px 14px;
+        font-size: 12px;
+    }
+
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .data-table {
+        font-size: 12px;
+    }
+
+    .data-table th,
+    .data-table td {
+        padding: 8px 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .header-title h1 {
+        font-size: 0.9rem;
+    }
+
+    .header-title p {
+        display: none;
+    }
+
+    .logo-icon {
+        width: 36px;
+        height: 36px;
+    }
+
+    .logo-icon img {
+        width: 36px !important;
+        height: 36px !important;
+    }
+
+    .last-updated {
+        font-size: 0.6rem;
+    }
+
+    .stats {
+        font-size: 0.65rem;
+        padding: 3px 10px;
+    }
+
+    .btn-refresh {
+        padding: 4px 10px;
+        font-size: 0.65rem;
+    }
+
+    #map {
+        height: calc(100vh - 110px) !important;
+    }
+}        }
