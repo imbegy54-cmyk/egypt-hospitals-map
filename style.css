@@ -1,0 +1,127 @@
+/* style.css - تنسيقات إضافية */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f5f6fa;
+}
+
+#map {
+    height: 100vh;
+    width: 100%;
+}
+
+/* تنسيق البوب أب (الكارت) */
+.leaflet-popup-content {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-width: 200px;
+}
+
+.leaflet-popup-content h3 {
+    color: #2c3e50;
+    margin-top: 0;
+    margin-bottom: 8px;
+    font-size: 18px;
+}
+
+.leaflet-popup-content hr {
+    margin: 8px 0;
+    border: 0;
+    border-top: 1px solid #ecf0f1;
+}
+
+.leaflet-popup-content p {
+    margin: 5px 0;
+    font-size: 14px;
+    color: #34495e;
+}
+
+/* تنسيق زر الرجوع */
+.custom-return-btn button {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+}
+
+.custom-return-btn button:hover {
+    background: #34495e !important;
+    transform: scale(1.05);
+}
+
+/* تنسيق علامات المحافظات */
+.gov-marker div {
+    transition: transform 0.3s ease;
+}
+
+.gov-marker div:hover {
+    transform: scale(1.1);
+}
+
+/* تنسيق علامات المستشفيات */
+.hospital-marker div {
+    transition: transform 0.3s ease;
+}
+
+.hospital-marker div:hover {
+    transform: scale(1.2);
+}
+/* تنسيق الكارت التعريفي */
+.leaflet-popup-content {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-width: 350px;
+    max-width: 450px;
+    padding: 0 !important;
+    margin: 0 !important;
+    direction: rtl;
+}
+
+.leaflet-popup-content-wrapper {
+    border-radius: 12px !important;
+    overflow: hidden;
+    padding: 0 !important;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2) !important;
+}
+
+.leaflet-popup-tip {
+    display: none; /* اختياري: إخفاء المثلث الصغير */
+}
+
+/* تنسيق الأزرار داخل الكارت */
+.leaflet-popup-content button {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    transition: all 0.3s ease;
+}
+
+.leaflet-popup-content button:hover {
+    transform: scale(1.02);
+    opacity: 0.9;
+}
+
+/* تنسيق التخصصات */
+.leaflet-popup-content .specialty-tag {
+    background: #3498db;
+    color: white;
+    padding: 3px 10px;
+    border-radius: 15px;
+    font-size: 12px;
+    display: inline-block;
+    margin: 2px;
+}
+
+/* تنسيق الإحصائيات */
+.stat-box {
+    background: #f8f9fa;
+    padding: 8px;
+    border-radius: 8px;
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.stat-box:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}

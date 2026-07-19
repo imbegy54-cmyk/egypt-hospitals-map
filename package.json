@@ -1,0 +1,15 @@
+{
+  "name": "dr-ak",
+  "version": "1.0.0",
+  "description": "خريطة مستشفيات مصر",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "vercel-build": "echo Hello"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "googleapis": "^144.0.0"
+  }
+}
